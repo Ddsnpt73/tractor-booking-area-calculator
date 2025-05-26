@@ -1,0 +1,70 @@
+index.html
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <title>क्षेत्रफळ कॅल्क्युलेटर</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+        input, button { padding: 10px; margin: 5px; width: 100%; max-width: 300px; }
+        .result { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>ट्रॅक्टर चालकांसाठी क्षेत्रफळ कॅल्क्युलेटर</h2>
+    <label>लांबी (मीटर): <input type="number" id="length"></label><br>
+    <label>रुंदी (मीटर): <input type="number" id="width"></label><br>
+    <button onclick="calculateArea()">क्षेत्रफळ मोजा</button>
+
+    <div class="result" id="result"></div>
+
+    <a href="https://wa.me/91YOURNUMBER?text= हे%20माझे%20शेताचे%20क्षेत्रफळ%20आहे:%20" target="_blank">
+        <button style="background:#25D366; color:white; margin-top:20px;">WhatsApp वर मेसेज करा</button>
+    </a>
+
+    <!-- ट्रॅक्टर बुकिंग फॉर्म -->
+    <h2 style="margin-top:40px;">ट्रॅक्टर बुकिंग</h2>
+    <form id="bookingForm">
+        <label>तुमचे नाव: <input type="text" required></label><br>
+        <label>मोबाइल नंबर: <input type="tel" required></label><br>
+        <label>तारीख: <input type="date" required></label><br>
+        <input type="hidden" id="areaResult" value="">
+        <button type="submit">बुक करा</button>
+    </form>
+    <p id="confirmation"></p>
+
+    <script>
+        function calculateArea() {
+            const length = parseFloat(document.getElementById("length").value);
+            const width = parseFloat(document.getElementById("width").value);
+
+            if (isNaN(length) || isNaN(width)) {
+                alert("कृपया दोन्ही संख्या टाका.");
+                return;
+            }
+
+            const areaInSqMeters = length * width;
+            const areaInAcres = areaInSqMeters / 4046.86;
+            const ratePerAcre = 700;
+            const totalCost = areaInAcres * ratePerAcre;
+
+            document.getElementById("result").innerHTML = `
+                एकूण क्षेत्रफळ: ${areaInAcres.toFixed(2)} एकर <br>
+                ट्रॅक्टरचे भाडे: ₹${totalCost.toFixed(2)}
+            `;
+            document.getElementById("areaResult").value = areaInAcres.toFixed(2) + " Acre";
+        }
+
+        document.getElementById("bookingForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const name = this[0].value;
+            const phone = this[1].value;
+            const date = this[2].value;
+            const area = document.getElementById("areaResult").value;
+
+            document.getElementById("confirmation").innerText = "धन्यवाद! तुमची बुकिंग झाली आहे.";
+            window.open(`https://wa.me/91YOURNUMBER?text= नाव:${name}, क्षेत्रफळ:${area}, तारीख:${date}`, "_blank");
+        });
+    </script>
+</body>
+</html>
